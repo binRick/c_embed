@@ -1,8 +1,7 @@
 default: all
 ##########################################################
 clean:
-	@rm -rf build
-	@rm -rf loader/build
+	@rm -rf loader/build build loader/c_embed/*.c_embed
 
 meson:
 	@meson build ||true
@@ -24,4 +23,8 @@ test-loader:
 info-loader:
 	./loader/build/loader1 info
 
-all: meson test install build-loader test-loader info-loader
+embed:
+	./build/c_embed -t tbl -z -o loader/c_embed/tbl1.c_embed Makefile src/c_embed.c loader/src/loader1.c meson.build loader/meson.build
+
+
+all: meson test install embed build-loader test-loader info-loader
