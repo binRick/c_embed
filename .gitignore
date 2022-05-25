@@ -6,9 +6,10 @@
 .nodemon.log
 embeds
 .n
-**/deps/*
+*/deps/*
 **/vendor/*
 **/submodules/*
 */build
 */.cache
-**/meson/*
+loader/meson/*
+embed/meson/*

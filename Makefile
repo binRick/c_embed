@@ -106,7 +106,10 @@ tidy: uncrustify uncrustify-clean fix-dbg
 
 dev-all: all
 
-dev: clean tidy nodemon
+pull:
+	@git pull
+
+dev: pull clean tidy nodemon
 
 nodemon:
 	@$(PASSH) -L .nodemon.log $(NODEMON) -w meson.build --delay 1 -I -V -w 'include/*.h' -w meson.build -w src -w Makefile -w loader/meson.build -w loader/src -w loader/include -i '*/embeds/*' -e tpl,build,sh,c,h,Makefile -x env -- bash -c 'make dev-all||true'
