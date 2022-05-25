@@ -24,7 +24,7 @@ info-loader:
 	@./loader/build/loader1 info
 
 embed:
-	@./build/c_embed -t tbl -z -o loader/c_embed/tbl1.c_embed Makefile src/c_embed.c loader/src/loader1.c meson.build loader/meson.build
+	@./build/c_embed -t tbl -z -o loader/c_embed/tbl1.c_embed Makefile src/c_embed.c loader/src/loader1.c meson.build loader/meson.build .direnv
 
 
 all: clean meson test install embed build-loader test-loader info-loader

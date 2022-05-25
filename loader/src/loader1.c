@@ -6,8 +6,7 @@
 static char *cmd;
 
 static int tbl_info() {
-      size_t total_bytes = (size_t)((void *)tbl);
-      printf("Loaded %lu total bytes\n", total_bytes);
+      printf("Loaded %lu files:\n", tbl_qty);
       for(int i=0;i<tbl_qty;i++){
           printf("#%d> Loaded %6lu bytes- %20s|\n", i, tbl[i].size, tbl[i].filename);
       }
