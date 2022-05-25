@@ -65,4 +65,4 @@ tidy: uncrustify uncrustify-clean fix-dbg
 dev:
 	@$(PASSH) -L .nodemon.log $(NODEMON) -w meson.build -I -V -w 'include/*.h' -w meson.build -w src -w Makefile -w loader/meson.build -w loader/src -w loader/include -i 'loader/c_embed/*' -e tpl,build,sh,c,h,Makefile -x env -- bash -c 'make||true'
 
-all: clean do-meson test install embed build-loader test-loader info-loader
+all: do-meson test install embed build-loader test-loader info-loader

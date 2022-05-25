@@ -37,11 +37,6 @@ inc = include_directories(
 #//***********************************************************/
 #//***********************************************************/
 test_env = environment()
-test_env.set('__MESON_TEST_MODE__', '1')
-test_env.set('__SH', sh.full_path())
-test_env.set('TEMPLATE_PATH', pwd + '/etc/tpl/color-names')
-test_env.set('__BD', meson.current_build_dir())
-test_env.set('__SD', meson.current_source_dir())
 #//***********************************************************/
 subdir('meson/deps/djbhash')
 enabled_bins = [
