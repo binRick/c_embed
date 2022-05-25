@@ -254,14 +254,10 @@ int main(int argc, char **argv) {
     fprintf(fp, "};\n\n"
             "size_t %s_qty = %lu;\n"
             "size_t %s_bytes = %lu;\n"
-            "int64_t %s_created_ts = %lld;\n"
-            "char uuid[%d] = \"%s\";\n"
-            "char unique[%d] = \"%s\";\n", 
+            "int64_t %s_created_ts = %lld;\n",
             tablename, qty, 
             tablename, total_bytes,
-            tablename, ts,
-            UUID4_LEN, uuid4,
-            UUID4_LEN, unique
+            tablename, ts
             );
   }
 
