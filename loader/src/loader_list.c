@@ -1,6 +1,6 @@
 /////////////////////////////////////////////
 #include "../include/loader_list.h"
-#define BINARY_NAME "loader_list"
+#define BINARY_NAME    "loader_list"
 /////////////////////////////////////////////
 static char *cmd;
 

@@ -1,6 +1,6 @@
 /////////////////////////////////////////////
-#include "../include/loader1.h"
-#define BINARY_NAME "loader_hash"
+#include "../include/loader_hash.h"
+#define BINARY_NAME    "loader_hash"
 /////////////////////////////////////////////
 static char *cmd;
 
