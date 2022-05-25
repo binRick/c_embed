@@ -1,25 +1,3 @@
-/*
-** Copyright (c) 2020 rxi
-**
-** Permission is hereby granted, free of charge, to any person obtaining a copy
-** of this software and associated documentation files (the "Software"), to
-** deal in the Software without restriction, including without limitation the
-** rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-** sell copies of the Software, and to permit persons to whom the Software is
-** furnished to do so, subject to the following conditions:
-**
-** The above copyright notice and this permission notice shall be included in
-** all copies or substantial portions of the Software.
-**
-** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-** FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-** IN THE SOFTWARE.
-**/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -119,6 +97,12 @@ static void write_embedded(FILE *fp, const char *filename,
   }
   safename(varname, filename);
 
+  fprintf(fp, "#pragma once\n");
+  fprintf(fp, "#include <stdio.h>\n");
+  fprintf(fp, "#include <ctype.h>\n");
+  fprintf(fp, "#include <string.h>\n");
+  fprintf(fp, "#include <stdlib.h>\n");
+  fprintf(fp, "\n");
   if (!nostatic) { fprintf(fp, "static "); }
   fprintf(fp, "unsigned char %s%s[] = {", varprefix, varname);
   BufferedFile inbf = bf_reader(infp);
@@ -144,7 +128,7 @@ static void write_embedded(FILE *fp, const char *filename,
 
 static void print_help(void) {
   printf(
-    "Usage: cembed [OPTION]... [FILE]...\n"
+    "Usage: c_embed [OPTION]... [FILE]...\n"
     "Create C header with file data embedded in char arrays\n"
     "\n"
     "  -o <filename>  output file\n"
@@ -158,6 +142,9 @@ static void print_help(void) {
 
 
 int main(int argc, char **argv) {
+  if ((argc >= 2) && (strcmp(argv[1], "--test") == 0)) {
+      printf("Test OK\n"); return(0);
+  }    
   char **arg = argv + 1;
   char **arg_end = argv + argc;
 
@@ -177,7 +164,7 @@ int main(int argc, char **argv) {
         break;
 
       case 'v':
-        printf("cembed " VERSION "\n");
+        printf("c_embed " VERSION "\n");
         exit(EXIT_SUCCESS);
         break;
 
@@ -231,19 +218,21 @@ int main(int argc, char **argv) {
   }
 
   /* write table */
+  size_t qty = 0, total_bytes = 0;
   if (tablename) {
     if (!nostatic) { fprintf(fp, "static "); }
-    fprintf(fp, "struct { char *filename; unsigned char *data; int size; } ");
+    fprintf(fp, "struct C_EMBED_%s { \n\tchar *filename; \n\tunsigned char *data; \n\tsize_t size;\n} ", tablename);
     fprintf(fp, "%s[] = {\n", tablename);
     for (char **a = arg; a < arg_end; a++) {
       char varname[MAX_FILENAME];
       safename(varname, *a);
-      fprintf(fp, "{ \"%s\", %s, (int) sizeof(%s) ", *a, varname, varname);
+      fprintf(fp, "\t{ \"%s\", %s, (size_t) sizeof(%s) ", *a, varname, varname);
       if (zerobyte) { fprintf(fp, "- 1 "); }
       fprintf(fp, "},\n");
+      qty++;
     }
-    fprintf(fp, "{ 0 }\n");
-    fprintf(fp, "};\n");
+    fprintf(fp, "\t{ 0 },\n");
+    fprintf(fp, "};\n\nsize_t %s_qty = %lu, %s_bytes = %lu;\n", tablename, qty, tablename, total_bytes);
   }
 
   /* clean up */
