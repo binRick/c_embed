@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <stdarg.h>
 #include <ctype.h>
+#include <sys/time.h>
+#include "deps/timestamp/timestamp.h"
+#include "deps/slug/slug.h"
+#include "../include/uuid4.h"
+
 
 #define VERSION "v0.3"
 #define MAX_FILENAME 256
@@ -14,6 +20,10 @@ typedef struct {
   int eof_idx;
 } BufferedFile;
 
+size_t total_bytes, qty;
+int64_t ts;
+char uuid4[UUID4_LEN];
+char unique[UUID4_LEN];
 
 static BufferedFile bf_writer(FILE *fp) {
   BufferedFile bf = { .fp = fp };
@@ -80,6 +90,7 @@ static void write_byte_string(BufferedFile *bf, unsigned char n) {
   if (n >= 100) { bf_write_byte(bf, '0' + (n / 100) % 10); }
   if (n >=  10) { bf_write_byte(bf, '0' + (n /  10) % 10); }
   bf_write_byte(bf, '0' + n % 10);
+  total_bytes++;
 }
 
 
@@ -97,14 +108,8 @@ static void write_embedded(FILE *fp, const char *filename,
   }
   safename(varname, filename);
 
-  fprintf(fp, "#pragma once\n");
-  fprintf(fp, "#include <stdio.h>\n");
-  fprintf(fp, "#include <ctype.h>\n");
-  fprintf(fp, "#include <string.h>\n");
-  fprintf(fp, "#include <stdlib.h>\n");
-  fprintf(fp, "\n");
   if (!nostatic) { fprintf(fp, "static "); }
-  fprintf(fp, "unsigned char %s%s[] = {", varprefix, varname);
+  fprintf(fp, "unsigned char __C_EMBED_TBL__%s__%s%s[] = {", unique, varprefix, varname);
   BufferedFile inbf = bf_reader(infp);
   BufferedFile bf = bf_writer(fp);
   int n = 0;
@@ -113,7 +118,10 @@ static void write_embedded(FILE *fp, const char *filename,
     int chr = bf_read_byte(&inbf);
     if (chr == EOF) { break; }
     if (n > 0) { bf_write_byte(&bf, ','); }
-    if (n % 20 == 0) { bf_write_byte(&bf, '\n'); }
+    if (n % 20 == 0) { 
+        bf_write_byte(&bf, '\n'); 
+        bf_write_byte(&bf, '\t'); 
+    }
     write_byte_string(&bf, chr);
     n++;
   }
@@ -149,6 +157,10 @@ int main(int argc, char **argv) {
   char **arg_end = argv + argc;
 
   /* defaults */
+  ts = timestamp();
+  uuid4_init();
+  uuid4_generate(uuid4);
+  safename(unique, uuid4);
   const char *outfile = NULL;
   const char *prefix = "";
   const char *tablename = NULL;
@@ -211,6 +223,13 @@ int main(int argc, char **argv) {
   /* open output */
   FILE *fp = outfile ? fopen(outfile, "wb") : stdout;
   if (!fp) { error("failed to open output file '%s'", outfile); }
+  fprintf(fp, "#pragma once\n");
+  fprintf(fp, "#include <stdio.h>\n");
+  fprintf(fp, "#include <ctype.h>\n");
+  fprintf(fp, "#include <string.h>\n");
+  fprintf(fp, "#include <stdlib.h>\n\n");
+  fprintf(fp, "#ifndef __C_EMBED_TBL__DEFINED\n#define __C_EMBED__TBL__DEFINED\n");
+  fprintf(fp, "typedef struct C_EMBED_TBL C_EMBED_TBL;\nstruct C_EMBED_TBL { \n\tchar *filename; \n\tunsigned char *data; \n\tsize_t size;\n};\n#endif\n\n");
 
   /* write files */
   for (char **a = arg; a < arg_end; a++) {
@@ -218,21 +237,32 @@ int main(int argc, char **argv) {
   }
 
   /* write table */
-  size_t qty = 0, total_bytes = 0;
   if (tablename) {
     if (!nostatic) { fprintf(fp, "static "); }
-    fprintf(fp, "struct C_EMBED_%s { \n\tchar *filename; \n\tunsigned char *data; \n\tsize_t size;\n} ", tablename);
-    fprintf(fp, "%s[] = {\n", tablename);
+    fprintf(fp, "C_EMBED_TBL %s[] = {\n", tablename);
     for (char **a = arg; a < arg_end; a++) {
       char varname[MAX_FILENAME];
       safename(varname, *a);
-      fprintf(fp, "\t{ \"%s\", %s, (size_t) sizeof(%s) ", *a, varname, varname);
-      if (zerobyte) { fprintf(fp, "- 1 "); }
-      fprintf(fp, "},\n");
+      fprintf(fp, "\t{\n\t\t.filename = \"%s\",\n\t\t.data     = __C_EMBED_TBL__%s__%s,\n\t\t.size     = (size_t)sizeof(__C_EMBED_TBL__%s__%s)", 
+              *a, unique, varname, unique, varname
+              );
+      if (zerobyte) { fprintf(fp, " - 1,\n"); }
+      fprintf(fp, "\t},\n");
       qty++;
     }
-    fprintf(fp, "\t{ 0 },\n");
-    fprintf(fp, "};\n\nsize_t %s_qty = %lu, %s_bytes = %lu;\n", tablename, qty, tablename, total_bytes);
+    fprintf(fp, "\t{ NULL },\n");
+    fprintf(fp, "};\n\n"
+            "size_t %s_qty = %lu;\n"
+            "size_t %s_bytes = %lu;\n"
+            "int64_t %s_created_ts = %lld;\n"
+            "char uuid[%d] = \"%s\";\n"
+            "char unique[%d] = \"%s\";\n", 
+            tablename, qty, 
+            tablename, total_bytes,
+            tablename, ts,
+            UUID4_LEN, uuid4,
+            UUID4_LEN, unique
+            );
   }
 
   /* clean up */

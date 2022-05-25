@@ -30,9 +30,13 @@ pwd = run_command(pwd_bin, check: true).stdout().strip()
 inc = include_directories(
   '.',
   './include', 
-  './deps', 
-  './submodules',
   './src', 
+  './deps', 
+  './deps/timestamp', 
+  './deps/clibs/module', 
+  './deps/slug', 
+  './deps/bytes', 
+  './submodules',
 )
 #//***********************************************************/
 enabled_bins = [
@@ -42,6 +46,8 @@ bins = []
 foreach bin : enabled_bins
         bin_src = [
           'src/' + bin + '.c',
+          'deps/timestamp/timestamp.c',
+          'src/uuid4.c',
         ]
         bins += {
           'name': bin,

@@ -4,3 +4,5 @@
 #include <string.h>
 #include <stdarg.h>
 #include <ctype.h>
+#include <stdint.h>
+#include <sys/time.h>

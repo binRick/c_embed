@@ -3,6 +3,9 @@ default: all
 clean:
 	@rm -rf loader/build build loader/c_embed/*.c_embed
 
+setup:
+	@clib i
+
 meson:
 	@meson build ||true
 	@ninja -C build
