@@ -1,0 +1,4 @@
+[wrap-git]
+directory=libtermpaint
+url=https://github.com/termpaint/termpaint
+revision=head

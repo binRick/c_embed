@@ -7,3 +7,15 @@
 [submodule "submodules/b64.c"]
 	path = submodules/b64.c
 	url = https://github.com/littlstar/b64.c
+[submodule "submodules/clfag"]
+	path = submodules/clfag
+	url = https://github.com/aperezdc/cflag
+[submodule "submodules/cflag"]
+	path = submodules/cflag
+	url = https://github.com/aperezdc/cflag
+[submodule "submodules/boydemdb"]
+	path = submodules/boydemdb
+	url = https://github.com/dimkr/boydemdb
+[submodule "submodules/libtermkey"]
+	path = submodules/libtermkey
+	url = https://github.com/astoeckel/libtermkey

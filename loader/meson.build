@@ -1,10 +1,8 @@
-project('loaders',
+project(
+  'loaders',
   ['c'],
-  version : '0.0.1',
-  default_options : [
-    'warning_level=0',
-    'c_std=gnu99',
-  ]
+version : '1.0.0',
+default_options : ['warning_level=0', 'c_std=gnu99']
 )
 config = configuration_data()
 version = run_command('git', 'describe', '--tags')
@@ -26,6 +24,7 @@ cc = meson.get_compiler('c')
 #//***********************************************************/
 sh = find_program('sh', required : true)
 pwd_bin = find_program('pwd', required : true)
+m_dep = cc.find_library('m', required : false)
 #//***********************************************************/
 pwd = run_command(pwd_bin, check: true).stdout().strip()
 #//***********************************************************/
@@ -38,15 +37,35 @@ inc = include_directories(
 )
 #//***********************************************************/
 miniz_dep = dependency('miniz', fallback : [ 'miniz', 'miniz_dep'])
-subdir('meson/deps/chan')
-subdir('meson/deps/b64')
+#boydemdb = dependency('boydemdb', fallback : [ 'boydemdb', 'boydemdb'])
+#termbox = dependency('termbox', fallback : [ 'termbox', 'termbox_dep'])
+dep_cargs = dependency('cargs',fallback:['cargs', 'dep_cargs'])
+spng_dep = dependency('libspng',fallback:['libspng', 'spng_dep'])
+dep_foxenunit = dependency('libfoxenunit',fallback:['libfoxenunit', 'dep_foxenunit'])
+dep_vtparse = dependency('vtparse',fallback:['vtparse', 'dep_vtparse'])
+#dep_libtermkey = dependency('libtermkey',fallback:['libtermkey', 'dep_termkey'])
+#termpaint_dep = dependency('termpaint',fallback:['libtermpaint','termpaint_dep'])
+#,'libtermpaint', 'dep_libtermpaint'])
+subdir('meson/deps')
 #chan_dep = dependency('chan', fallback : [ 'chan', 'chan_dep'])
-#libuv_dep = dependency('libuv', fallback : [ 'libuv', 'libuv_dep'])
+libuv_dep = dependency('libuv', fallback : [ 'libuv', 'libuv_dep'])
 #//***********************************************************/
 test_env = environment()
 #//***********************************************************/
 subdir('meson/deps/djbhash')
+color0_srcs = [
+    'src/color0/main.c',
+    'src/color0/options.c',
+    'src/color0/colors.c',
+    'src/color0/output.c'
+]
+executable('color0', color0_srcs, dependencies: [m_dep,dep_vtparse], install: false)
 enabled_bins = [
+  #  { 'bin': 'termkey0',          'tests': [], 'deps': [dep_libtermkey], },
+  { 'bin': 'spng0',             'tests': [], 'deps': [spng_dep], },
+  { 'bin': 'cargs0',            'tests': [], 'deps': [dep_vtparse, dep_cargs], },
+  { 'bin': 'vtparse0',          'tests': [], 'deps': [dep_vtparse], },
+  { 'bin': 'vtparse_example',   'tests': [], 'deps': [dep_vtparse], },
   { 'bin': 'loader_list',   'tests': [
                                   { 
                                     'args': [
@@ -55,6 +74,7 @@ enabled_bins = [
                                             ],    
                                   }
                                  ],    
+                                 'deps': [deps,djbhash_dep,chan_dep,b64_dep],
   },
   { 'bin': 'loader_chan',   'tests': [
                                   { 
@@ -64,6 +84,7 @@ enabled_bins = [
                                             ],    
                                   }
                                  ],    
+                                 'deps': [deps,djbhash_dep,chan_dep,b64_dep],
   },
   { 'bin': 'loader_iterate',   'tests': [
                                   { 
@@ -72,8 +93,9 @@ enabled_bins = [
                                              ['names'],
                                              ['sizes'],
                                             ],    
-                                  }
+                                  },
                                  ],    
+                                  'deps': [deps,djbhash_dep,chan_dep,b64_dep],
   },
   { 'bin': 'loader_stats',   'tests': [
                                   { 
@@ -83,8 +105,9 @@ enabled_bins = [
                                              ['qty'],
                                              ['timestamp'],
                                             ],    
-                                  }
+                                  },
                                  ],    
+                                  'deps': [deps,djbhash_dep,chan_dep,b64_dep],
   },
   { 'bin': 'loader_hash',   'tests': [
                                   { 
@@ -95,8 +118,23 @@ enabled_bins = [
                                              ['names'],
                                              ['sizes'],
                                             ],    
-                                  }
+                                  },
                                  ],    
+                                  'deps': [deps,djbhash_dep,chan_dep,b64_dep],
+  },
+  { 'bin': 'loader_dev',   'tests': [
+                                  { 
+                                    'args': [
+                                             ['--test'],
+                                            ],    
+                                  },
+                                 ],    
+                                 'deps': [
+                                   deps,djbhash_dep,chan_dep,b64_dep,
+                                   #                                   termpaint_dep,
+                                   dep_foxenunit,
+                                   dep_vtparse,
+                                   ],
   },
 ]
 if get_option('enable-binaries')
@@ -112,12 +150,7 @@ if get_option('enable-binaries')
       files(bin_srcs),
       files(submodule_srcs),
      ],
-     dependencies: [
-      deps, 
-      djbhash_dep, 
-      chan_dep, 
-      b64_dep, 
-     ],
+     dependencies: b['deps'],
      include_directories: [
       inc,
      ],

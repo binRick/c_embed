@@ -1,0 +1,7 @@
+[wrap-git]
+directory = boydemdb
+url = https://github.com/dimkr/boydemdb
+revision=head
+
+[provide]
+dependency_names = boydemdb
