@@ -47,7 +47,8 @@ inc = include_directories(
   './submodules',
 )
 #//***********************************************************/
-foreach b : embeds_bins
+if get_option('enable-binaries')
+ foreach b : embeds_bins
   bin_src = [
     'src/' + b + '.c',
   ]
@@ -69,4 +70,5 @@ foreach b : embeds_bins
   if get_option('enable-binary-tests')
     test(bin['name'], bin['executable'], args: ['--test'])
   endif
-endforeach
+ endforeach
+endif

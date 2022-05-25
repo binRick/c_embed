@@ -1,3 +1,4 @@
+#include "../include/embed.h"
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdint.h>
@@ -5,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
-#include "../include/embed.h"
 
 
 #define VERSION         "v0.3"

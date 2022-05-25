@@ -1,4 +1,4 @@
-project('loader1',
+project('loaders',
   ['c'],
   version : '0.0.1',
   default_options : [
@@ -38,7 +38,7 @@ inc = include_directories(
 #//***********************************************************/
 test_env = environment()
 #//***********************************************************/
-subdir('vendor/djbhash')
+subdir('meson/deps/djbhash')
 enabled_bins = [
   { 'bin': 'loader1',   'tests': [
                                   { 
@@ -59,8 +59,7 @@ enabled_bins = [
                                  ],    
   },
 ]
-execs = []
-if get_option('enable-binary-tests')
+if get_option('enable-binaries')
   foreach b : enabled_bins
    bin_src = [
       'src/' + b['bin'] + '.c',
