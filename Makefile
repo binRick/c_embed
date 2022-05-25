@@ -9,12 +9,19 @@ FZF=$(shell command -v fzf)
 BLINE=$(shell command -v bline)
 UNCRUSTIFY=$(shell command -v uncrustify)
 PWD=$(shell command -v pwd)
+FIND=$(shell command -v find)
 ##############################################################
 DIR=$(shell $(PWD))
 LOADER_DIR=$(DIR)/loader
 EMBED_DIR=$(DIR)/embed
 EMBEDS_DIR=$(DIR)/embeds
+VENDOR_DIR=$(DIR)/vendor
 PROJECT_DIR=$(DIR)
+MESON_DEPS_DIR=$(DIR)/meson/deps
+VENDOR_DIR=$(DIR)/vendor
+DEPS_DIR=$(DIR)/deps
+ETC_DIR=$(DIR)/etc
+DOCKER_DIR=$(DIR)/docker
 ##############################################################
 TIDIED_FILES = $(LOADER_DIR)/src/*.c $(LOADER_DIR)/include/*.h $(EMBED_DIR)/src/*.c $(EMBED_DIR)/include/*.h
 ##############################################################
@@ -23,10 +30,13 @@ CD_EMBED = cd $(EMBED_DIR)
 CD_PROJECT = cd $(PROJECT_DIR)
 ##############################################################
 TBL1_EMBED_FILE = $(EMBEDS_DIR)/tbl1.embed
-TBL1_EMBEDDED_FILES = Makefile
+TBL1_EMBEDDED_FILES = Makefile clib.json $(shell $(FIND) $(DOCKER_DIR) $(MESON_DEPS_DIR) $(ETC_DIR) $(DEPS_DIR) $(SUBMODULES_DIR) $(MESON_DEPS_DIR) $(VENDOR_DIR) -type f|sort -u)
 ##############################################################
 
-all: ensure dirs do-embed do-loader
+all: ensure dirs 
+	@make do-embed
+	@make do-loader
+
 do-build: do-embed-test do-loader-test
 
 clean: 
@@ -109,7 +119,9 @@ dev-all: all
 pull:
 	@git pull
 
-dev: pull clean tidy nodemon
+dev-clean: clean dev
+
+dev: pull tidy nodemon
 
 nodemon:
 	@$(PASSH) -L .nodemon.log $(NODEMON) -w meson.build --delay 1 -I -V -w 'include/*.h' -w meson.build -w src -w Makefile -w loader/meson.build -w loader/src -w loader/include -i '*/embeds/*' -e tpl,build,sh,c,h,Makefile -x env -- bash -c 'make dev-all||true'

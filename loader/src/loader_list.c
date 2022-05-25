@@ -1,7 +1,6 @@
 /////////////////////////////////////////////
-#include "../src/includes.c"
-/////////////////////////////////////////////
-#include "../embeds/tbl1.embed"
+#include "../include/loader_list.h"
+#define BINARY_NAME "loader_list"
 /////////////////////////////////////////////
 static char *cmd;
 
@@ -19,9 +18,10 @@ static int tbl_info() {
 static int print_help() {
   printf(
     "Usage:\n"
-    "\t loader1 <command>\n\n"
+    "\t %s <command>\n\n"
     "Commands:\n"
-    "\t info: show embedded archive information\n"
+    "\t info: show embedded archive information\n",
+    BINARY_NAME
     );
 
   return(1);

@@ -13,3 +13,4 @@ embeds
 */.cache
 loader/meson/*
 embed/meson/*
+tmp/

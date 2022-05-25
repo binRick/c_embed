@@ -1,8 +1,6 @@
 /////////////////////////////////////////////
-#include "../src/includes.c"
-/////////////////////////////////////////////
-#include "../embeds/tbl1.embed"
-#include "../submodules/djbhash/src/djbhash.h"
+#include "../include/loader1.h"
+#define BINARY_NAME "loader_hash"
 /////////////////////////////////////////////
 static char *cmd;
 
@@ -11,9 +9,10 @@ static char *cmd;
 static int print_help() {
   printf(
     "Usage:\n"
-    "\t loader1 <command>\n\n"
+    "\t %s <command>\n\n"
     "Commands:\n"
-    "\t hash: show embedded archive using hash approach\n"
+    "\t hash: show embedded archive using hash approach\n",
+    BINARY_NAME
     );
 
   return(1);

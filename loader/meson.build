@@ -40,7 +40,7 @@ test_env = environment()
 #//***********************************************************/
 subdir('meson/deps/djbhash')
 enabled_bins = [
-  { 'bin': 'loader1',   'tests': [
+  { 'bin': 'loader_list',   'tests': [
                                   { 
                                     'args': [
                                              ['--test'],
