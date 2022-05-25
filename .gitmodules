@@ -1,3 +1,9 @@
 [submodule "submodules/djbhash"]
 	path = submodules/djbhash
 	url = https://github.com/gdi/djbhash
+[submodule "submodules/chan"]
+	path = submodules/chan
+	url = https://github.com/tylertreat/chan
+[submodule "submodules/b64.c"]
+	path = submodules/b64.c
+	url = https://github.com/littlstar/b64.c

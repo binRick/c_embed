@@ -40,8 +40,8 @@ all: ensure dirs
 do-build: do-embed-test do-loader-test
 
 clean: 
-	@cd $(EMBED_DIR) && rm -rf deps submodules vendor build meson .cache
-	@cd $(LOADER_DIR) && rm -rf deps submodules vendor build meson .cache
+	@cd $(EMBED_DIR) && rm -rf deps submodules vendor build meson .cache subprojects
+	@cd $(LOADER_DIR) && rm -rf deps submodules vendor build meson .cache subprojects
 	@rm -rf $(EMBEDS_DIR)
 
 ensure: dirs-embeds
@@ -50,12 +50,14 @@ setup:
 	@clib i
 
 loader-deps:
+	@rsync -ar $(PROJECT_DIR)/subprojects $(LOADER_DIR)/.
 	@rsync -ar $(PROJECT_DIR)/deps $(LOADER_DIR)/.
 	@rsync -ar $(PROJECT_DIR)/submodules $(LOADER_DIR)/.
 	@rsync -ar $(PROJECT_DIR)/vendor $(LOADER_DIR)/.
 	@rsync -ar $(PROJECT_DIR)/meson $(LOADER_DIR)/.
 
 embed-deps:
+	@rsync -ar $(PROJECT_DIR)/subprojects $(EMBED_DIR)/.
 	@rsync -ar $(PROJECT_DIR)/deps $(EMBED_DIR)/.
 	@rsync -ar $(PROJECT_DIR)/submodules $(EMBED_DIR)/.
 	@rsync -ar $(PROJECT_DIR)/vendor $(EMBED_DIR)/.
@@ -123,8 +125,10 @@ dev-clean: clean dev
 
 dev: pull tidy nodemon
 
+dev-loader:
+	@$(PASSH) -L .nodemon.log $(NODEMON) -w '*/meson.build' --delay 1 -i '*/subprojects' -I  -w 'include/*.h' -w meson.build -w src -w Makefile -w loader/meson.build -w loader/src -w loader/include -i '*/embeds/*' -e tpl,build,sh,c,h,Makefile -x env -- bash -c 'make do-loader||true'
+
 nodemon:
-	@$(PASSH) -L .nodemon.log $(NODEMON) -w meson.build --delay 1 -I -V -w 'include/*.h' -w meson.build -w src -w Makefile -w loader/meson.build -w loader/src -w loader/include -i '*/embeds/*' -e tpl,build,sh,c,h,Makefile -x env -- bash -c 'make dev-all||true'
+	@$(PASSH) -L .nodemon.log $(NODEMON) -w '*/meson.build' --delay 1 -i '*/subprojects' -I  -w 'include/*.h' -w meson.build -w src -w Makefile -w loader/meson.build -w loader/src -w loader/include -i '*/embeds/*' -e tpl,build,sh,c,h,Makefile -x env -- bash -c 'make dev-all||true'
 
 
-#test install embed build-loader test-loader info-loader

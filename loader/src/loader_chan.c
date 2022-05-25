@@ -1,8 +1,41 @@
 /////////////////////////////////////////////
-#include "../include/loader_list.h"
-#define BINARY_NAME    "loader_list"
+#include "../include/loader_chan.h"
+#define BINARY_NAME    "loader_chan"
 /////////////////////////////////////////////
 static char *cmd;
+
+
+char *b64(const char *s) {
+  char *enc = b64_encode((const unsigned char *)s, strlen(s));
+
+  return(enc);
+}
+
+chan_t *chan;
+
+
+void * ping(){
+  char *msg = b64("ok");
+
+  chan_send(chan, msg);
+  return(NULL);
+}
+
+
+int cmd_chan(){
+  chan = chan_init(0);
+  pthread_t th;
+
+  pthread_create(&th, NULL, ping, NULL);
+  void *msg;
+
+  chan_recv(chan, &msg);
+  unsigned char *dec = b64_decode((const char *)msg, strlen((const char *)msg));
+
+  printf("recvd:   %s -> %s\n", (const char *)msg, (const char *)dec);
+  chan_dispose(chan);
+  return(0);
+}
 
 
 static int tbl_list() {
@@ -20,7 +53,7 @@ static int print_help() {
     "Usage:\n"
     "\t %s <command>\n\n"
     "Commands:\n"
-    "\t list: list embedded archive files\n",
+    "\t chan: chan embedded archive files\n",
     BINARY_NAME
     );
 
@@ -38,8 +71,8 @@ int main(const int argc, const char **argv) {
 
   cmd = argv[1];
 
-  if (strcmp(cmd, "list") == 0) {
-    return(tbl_list());
+  if (strcmp(cmd, "chan") == 0) {
+    return(cmd_chan());
   }
 
   return(print_help());

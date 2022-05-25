@@ -20,6 +20,8 @@ add_project_arguments('-Wno-incompatible-pointer-types', language : 'c')
 #//***********************************************************/
 deps = []
 bin_srcs = []
+submodule_srcs = [
+]
 cc = meson.get_compiler('c')
 #//***********************************************************/
 sh = find_program('sh', required : true)
@@ -35,6 +37,11 @@ inc = include_directories(
   './src', 
 )
 #//***********************************************************/
+miniz_dep = dependency('miniz', fallback : [ 'miniz', 'miniz_dep'])
+subdir('meson/deps/chan')
+subdir('meson/deps/b64')
+#chan_dep = dependency('chan', fallback : [ 'chan', 'chan_dep'])
+#libuv_dep = dependency('libuv', fallback : [ 'libuv', 'libuv_dep'])
 #//***********************************************************/
 test_env = environment()
 #//***********************************************************/
@@ -44,7 +51,37 @@ enabled_bins = [
                                   { 
                                     'args': [
                                              ['--test'],
-                                             ['info'],
+                                             ['list'],
+                                            ],    
+                                  }
+                                 ],    
+  },
+  { 'bin': 'loader_chan',   'tests': [
+                                  { 
+                                    'args': [
+                                             ['--test'],
+                                             ['chan'],
+                                            ],    
+                                  }
+                                 ],    
+  },
+  { 'bin': 'loader_iterate',   'tests': [
+                                  { 
+                                    'args': [
+                                             ['--test'],
+                                             ['names'],
+                                             ['sizes'],
+                                            ],    
+                                  }
+                                 ],    
+  },
+  { 'bin': 'loader_stats',   'tests': [
+                                  { 
+                                    'args': [
+                                             ['--test'],
+                                             ['size'],
+                                             ['qty'],
+                                             ['timestamp'],
                                             ],    
                                   }
                                  ],    
@@ -53,7 +90,10 @@ enabled_bins = [
                                   { 
                                     'args': [
                                              ['--test'],
-                                             ['hash'],
+                                             ['iterate'],
+                                             ['json'],
+                                             ['names'],
+                                             ['sizes'],
                                             ],    
                                   }
                                  ],    
@@ -70,10 +110,13 @@ if get_option('enable-binaries')
      [ 
       bin_src,
       files(bin_srcs),
+      files(submodule_srcs),
      ],
      dependencies: [
       deps, 
       djbhash_dep, 
+      chan_dep, 
+      b64_dep, 
      ],
      include_directories: [
       inc,
