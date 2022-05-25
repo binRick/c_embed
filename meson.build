@@ -17,9 +17,14 @@ add_project_arguments('-DLOG_USE_COLOR', language : 'c')
 add_project_arguments('-DLOG_LEVEL=TRACE', language : 'c')
 add_project_arguments('-Wno-pragma-once-outside-header', language : 'c')
 add_project_arguments('-Wno-incompatible-pointer-types', language : 'c')
+add_project_arguments('-Wno-pointer-sign', language : 'c')
 #//***********************************************************/
 deps = []
-bin_srcs = []
+bin_srcs = [
+  #  'submodules/djbhash/src/djbhash.c',
+  'deps/timestamp/timestamp.c',
+  'src/uuid4.c',
+]
 cc = meson.get_compiler('c')
 #//***********************************************************/
 sh = find_program('sh', required : true)
@@ -36,9 +41,11 @@ inc = include_directories(
   './deps/clibs/module', 
   './deps/slug', 
   './deps/bytes', 
+  './submodules/djbhash/src',
   './submodules',
 )
 #//***********************************************************/
+subdir('./meson/deps/djbhash')
 enabled_bins = [
   'c_embed',
 ]
@@ -46,8 +53,6 @@ bins = []
 foreach bin : enabled_bins
         bin_src = [
           'src/' + bin + '.c',
-          'deps/timestamp/timestamp.c',
-          'src/uuid4.c',
         ]
         bins += {
           'name': bin,

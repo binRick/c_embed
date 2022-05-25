@@ -1,0 +1,3 @@
+[submodule "submodules/djbhash"]
+	path = submodules/djbhash
+	url = https://github.com/gdi/djbhash

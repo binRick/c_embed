@@ -43,8 +43,10 @@ test_env.set('TEMPLATE_PATH', pwd + '/etc/tpl/color-names')
 test_env.set('__BD', meson.current_build_dir())
 test_env.set('__SD', meson.current_source_dir())
 #//***********************************************************/
+subdir('meson/deps/djbhash')
 enabled_bins = [
   'loader1',
+  'loader_hash',
 ]
 bins = []
 foreach bin : enabled_bins
@@ -60,6 +62,7 @@ foreach bin : enabled_bins
             ],
             dependencies: [
               deps, 
+              djbhash_dep, 
             ],
             include_directories: [
               inc,
