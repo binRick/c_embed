@@ -1,15 +1,29 @@
 /////////////////////////////////////////////
 #include "../src/includes.c"
 /////////////////////////////////////////////
-#include "../c_embed/tbl1.c_embed"
+#include "../embeds/tbl1.embed"
 #include "../submodules/djbhash/src/djbhash.h"
 /////////////////////////////////////////////
 static char *cmd;
 
 
+/////////////////////////////////////////////
+static int print_help() {
+  printf(
+    "Usage:\n"
+    "\t loader1 <command>\n\n"
+    "Commands:\n"
+    "\t hash: show embedded archive using hash approach\n"
+    );
+
+  return(1);
+}
+
+
 static int tbl_hash() {
   struct djbhash      hash, tbl_hash;
   struct djbhash_node *item;
+
   djbhash_init(&hash);
   djbhash_init(&tbl_hash);
 
@@ -36,7 +50,7 @@ static int tbl_hash() {
 
   djbhash_reset_iterator(&hash);
   item = djbhash_iterate(&tbl_hash);
-  for(int i = 0; item; i++) {
+  for (int i = 0; item; i++) {
     printf("#%d> |file:%s|size:%lub|\n",
            i,
            ((C_EMBED_TBL *)(item)->value)->filename,
@@ -62,30 +76,6 @@ static int tbl_hash() {
 } /* tbl_hash */
 
 
-/////////////////////////////////////////////
-static int tbl_info() {
-  printf("Loaded %lu files:\n", tbl_qty);
-  for (int i = 0; i < tbl_qty; i++) {
-    printf("#%d> Loaded %6lu bytes- %20s|\n", i, tbl[i].size, tbl[i].filename);
-  }
-  return(0);
-}
-
-
-/////////////////////////////////////////////
-static int print_help() {
-  printf(
-    "Usage:\n"
-    "\t loader1 <command>\n\n"
-    "Commands:\n"
-    "\t info\n"
-    "\t hash\n"
-    );
-
-  return(1);
-}
-
-
 int main(const int argc, const char **argv) {
   if ((argc >= 2) && (strcmp(argv[1], "--test") == 0)) {
     printf("Test OK\n"); return(0);
@@ -99,9 +89,5 @@ int main(const int argc, const char **argv) {
   if (strcmp(cmd, "hash") == 0) {
     return(tbl_hash());
   }
-  if (strcmp(cmd, "info") == 0) {
-    return(tbl_info());
-  }
-
   return(print_help());
 } /* main */

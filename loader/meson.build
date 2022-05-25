@@ -38,36 +38,56 @@ inc = include_directories(
 #//***********************************************************/
 test_env = environment()
 #//***********************************************************/
-subdir('meson/deps/djbhash')
+subdir('vendor/djbhash')
 enabled_bins = [
-  'loader1',
-  'loader_hash',
+  { 'bin': 'loader1',   'tests': [
+                                  { 
+                                    'args': [
+                                             ['--test'],
+                                             ['info'],
+                                            ],    
+                                  }
+                                 ],    
+  },
+  { 'bin': 'loader_hash',   'tests': [
+                                  { 
+                                    'args': [
+                                             ['--test'],
+                                             ['hash'],
+                                            ],    
+                                  }
+                                 ],    
+  },
 ]
-bins = []
-foreach bin : enabled_bins
-        bin_src = [
-          'src/' + bin + '.c',
-        ]
-        bins += {
-          'name': bin,
-          'executable': executable(bin, 
-            [ 
-              bin_src,
-              files(bin_srcs),
-            ],
-            dependencies: [
-              deps, 
-              djbhash_dep, 
-            ],
-            include_directories: [
-              inc,
-            ],
-          )
-        }
-endforeach
+execs = []
 if get_option('enable-binary-tests')
-    foreach b : bins
-      test(b['name'], b['executable'], args: ['--test'], env: test_env)
+  foreach b : enabled_bins
+   bin_src = [
+      'src/' + b['bin'] + '.c',
+   ]
+   e = {
+    'name': b['bin'],
+    'exec': executable(b['bin'], 
+     [ 
+      bin_src,
+      files(bin_srcs),
+     ],
+     dependencies: [
+      deps, 
+      djbhash_dep, 
+     ],
+     include_directories: [
+      inc,
+     ],
+    ),
+   }
+   if get_option('enable-binary-tests')
+    foreach t: b['tests']
+     foreach a: t['args']
+      test(b['bin'], e['exec'], args: a, env: test_env)
+     endforeach
     endforeach
+   endif
+  endforeach
 endif
 #//***********************************************************/

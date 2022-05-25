@@ -1,5 +1,13 @@
-loader/c_embed/*
+loader/embeds/*
 loader/.cache
 .attic
 .cache/
 .nodemon.log
+embeds
+.n
+*/deps
+*/vendor
+*/submodules
+*/build
+*/.cache
+*/meson

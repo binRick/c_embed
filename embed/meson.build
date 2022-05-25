@@ -1,11 +1,12 @@
-project('c_embed',
-  ['c'],
-  version : '0.0.1',
-  default_options : [
-    'warning_level=0',
-    'c_std=gnu99',
+project('embeds', ['c'],
+  default_options: [
+   'warning_level=0',
+   'c_std=gnu99',
   ]
 )
+embeds_bins = [
+  'embed',
+]
 config = configuration_data()
 version = run_command('git', 'describe', '--tags')
 config.set('version', version.stdout().strip())
@@ -21,9 +22,8 @@ add_project_arguments('-Wno-pointer-sign', language : 'c')
 #//***********************************************************/
 deps = []
 bin_srcs = [
-  #  'submodules/djbhash/src/djbhash.c',
   'deps/timestamp/timestamp.c',
-  'src/uuid4.c',
+  'vendor/uuid4/uuid4.c',
 ]
 cc = meson.get_compiler('c')
 #//***********************************************************/
@@ -32,10 +32,12 @@ pwd_bin = find_program('pwd', required : true)
 #//***********************************************************/
 pwd = run_command(pwd_bin, check: true).stdout().strip()
 #//***********************************************************/
+#//***********************************************************/
 inc = include_directories(
   '.',
   './include', 
   './src', 
+  './vendor', 
   './deps', 
   './deps/timestamp', 
   './deps/clibs/module', 
@@ -45,18 +47,13 @@ inc = include_directories(
   './submodules',
 )
 #//***********************************************************/
-subdir('./meson/deps/djbhash')
-enabled_bins = [
-  'c_embed',
-]
-bins = []
-foreach bin : enabled_bins
-        bin_src = [
-          'src/' + bin + '.c',
-        ]
-        bins += {
-          'name': bin,
-          'executable': executable(bin, 
+foreach b : embeds_bins
+  bin_src = [
+    'src/' + b + '.c',
+  ]
+  bin = {
+          'name': b,
+          'executable': executable(b, 
             [ 
               bin_src,
               files(bin_srcs),
@@ -68,11 +65,8 @@ foreach bin : enabled_bins
               inc,
             ],
           )
-        }
+  }
+  if get_option('enable-binary-tests')
+    test(bin['name'], bin['executable'], args: ['--test'])
+  endif
 endforeach
-if get_option('enable-binary-tests')
-    foreach b : bins
-      test(b['name'], b['executable'], args: ['--test'])
-    endforeach
-endif
-#//***********************************************************/

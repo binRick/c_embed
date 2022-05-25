@@ -13,7 +13,7 @@
 #include <windows.h>
 #endif
 
-#include "uuid4.h"
+#include "uuid4/uuid4.h"
 
 
 static uint64_t seed[2];

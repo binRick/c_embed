@@ -1,4 +1,3 @@
-#include "../include/includes.h"
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdint.h>
@@ -6,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
+#include "../include/embed.h"
 
 
 #define VERSION         "v0.3"
@@ -158,7 +158,7 @@ static void write_embedded(FILE *fp, const char *filename,
 
 static void print_help(void) {
   printf(
-    "Usage: c_embed [OPTION]... [FILE]...\n"
+    "Usage: embed [OPTION]... [FILE]...\n"
     "Create C header with file data embedded in char arrays\n"
     "\n"
     "  -o <filename>  output file\n"
@@ -198,7 +198,7 @@ int main(int argc, char **argv) {
       break;
 
     case 'v':
-      printf("c_embed " VERSION "\n");
+      printf("embed " VERSION "\n");
       exit(EXIT_SUCCESS);
       break;
 

@@ -1,7 +1,7 @@
 /////////////////////////////////////////////
 #include "../src/includes.c"
 /////////////////////////////////////////////
-#include "../c_embed/tbl1.c_embed"
+#include "../embeds/tbl1.embed"
 /////////////////////////////////////////////
 static char *cmd;
 
@@ -21,7 +21,7 @@ static int print_help() {
     "Usage:\n"
     "\t loader1 <command>\n\n"
     "Commands:\n"
-    "\t info\n"
+    "\t info: show embedded archive information\n"
     );
 
   return(1);
