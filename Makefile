@@ -40,8 +40,8 @@ all: ensure dirs
 do-build: do-embed-test do-loader-test
 
 clean: 
-	@cd $(EMBED_DIR) && rm -rf deps submodules vendor build meson .cache subprojects
-	@cd $(LOADER_DIR) && rm -rf deps submodules vendor build meson .cache subprojects
+	@cd $(EMBED_DIR) && rm -rf vendor build meson .cache subprojects
+	@cd $(LOADER_DIR) && rm -rf vendor build meson .cache subprojects
 	@rm -rf $(EMBEDS_DIR)
 
 ensure: dirs-embeds

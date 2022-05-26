@@ -41,8 +41,7 @@ inc = include_directories(
 #termbox = dependency('termbox', fallback : [ 'termbox', 'termbox_dep'])
 dep_cargs = dependency('cargs',fallback:['cargs', 'dep_cargs'])
 spng_dep = dependency('libspng',fallback:['libspng', 'spng_dep'])
-dep_foxenunit = dependency('libfoxenunit',fallback:['libfoxenunit', 'dep_foxenunit'])
-dep_vtparse = dependency('vtparse',fallback:['vtparse', 'dep_vtparse'])
+#dep_foxenunit = dependency('libfoxenunit',fallback:['libfoxenunit', 'dep_foxenunit'])
 #dep_libtermkey = dependency('libtermkey',fallback:['libtermkey', 'dep_termkey'])
 #termpaint_dep = dependency('termpaint',fallback:['libtermpaint','termpaint_dep'])
 #,'libtermpaint', 'dep_libtermpaint'])
@@ -59,13 +58,13 @@ color0_srcs = [
     'src/color0/colors.c',
     'src/color0/output.c'
 ]
-executable('color0', color0_srcs, dependencies: [m_dep,dep_vtparse], install: false)
+executable('color0', color0_srcs, dependencies: [m_dep], install: false)
 enabled_bins = [
   #  { 'bin': 'termkey0',          'tests': [], 'deps': [dep_libtermkey], },
   { 'bin': 'spng0',             'tests': [], 'deps': [spng_dep], },
-  { 'bin': 'cargs0',            'tests': [], 'deps': [dep_vtparse, dep_cargs], },
-  { 'bin': 'vtparse0',          'tests': [], 'deps': [dep_vtparse], },
-  { 'bin': 'vtparse_example',   'tests': [], 'deps': [dep_vtparse], },
+  { 'bin': 'cargs0',            'tests': [], 'deps': [dep_cargs], },
+  #  { 'bin': 'vtparse0',          'tests': [], 'deps': [], },
+  #{ 'bin': 'vtparse_example',   'tests': [], 'deps': [], },
   { 'bin': 'loader_list',   'tests': [
                                   { 
                                     'args': [
@@ -131,9 +130,6 @@ enabled_bins = [
                                  ],    
                                  'deps': [
                                    deps,djbhash_dep,chan_dep,b64_dep,
-                                   #                                   termpaint_dep,
-                                   dep_foxenunit,
-                                   dep_vtparse,
                                    ],
   },
 ]

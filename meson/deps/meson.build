@@ -1,0 +1,8 @@
+subdir('chan')
+subdir('b64')
+subdir('cflag')
+#subdir('rgba')
+#subdir('svpng')
+#subdir('module')
+subdir('cstringfn')
+#subdir('fs')
