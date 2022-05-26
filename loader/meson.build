@@ -36,7 +36,7 @@ inc = include_directories(
   './src', 
 )
 #//***********************************************************/
-miniz_dep = dependency('miniz', fallback : [ 'miniz', 'miniz_dep'])
+#//miniz_dep = dependency('miniz', fallback : [ 'miniz', 'miniz_dep'])
 #boydemdb = dependency('boydemdb', fallback : [ 'boydemdb', 'boydemdb'])
 #termbox = dependency('termbox', fallback : [ 'termbox', 'termbox_dep'])
 dep_cargs = dependency('cargs',fallback:['cargs', 'dep_cargs'])

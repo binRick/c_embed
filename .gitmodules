@@ -19,3 +19,6 @@
 [submodule "submodules/libtermkey"]
 	path = submodules/libtermkey
 	url = https://github.com/astoeckel/libtermkey
+[submodule "submodules/c_stringfn"]
+	path = submodules/c_stringfn
+	url = https://github.com/sagiegurari/c_stringfn

@@ -47,6 +47,7 @@ inc = include_directories(
   './submodules',
 )
 #//***********************************************************/
+subdir('meson/deps/cstringfn')
 if get_option('enable-binaries')
  foreach b : embeds_bins
   bin_src = [
@@ -61,6 +62,7 @@ if get_option('enable-binaries')
             ],
             dependencies: [
               deps, 
+              cstringfn_dep,
             ],
             include_directories: [
               inc,
