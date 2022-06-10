@@ -14,3 +14,7 @@ tmp/
 */*/subprojects/*
 *//subprojects/*
 */subprojects/*
+loader/submodules/*
+embed/submodules/*
+embed/deps/*
+loader/deps/*

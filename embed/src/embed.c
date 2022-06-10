@@ -184,9 +184,10 @@ int main(int argc, char **argv) {
   uuid4_generate(uuid4);
   safename(unique, uuid4);
 
-  struct StringFNStrings uuid_split = stringfn_split(uuid4,'-');
-  char *uuid_mini = strdup(uuid_split.strings[0]);
-  safename(unique, uuid_mini); 
+  struct StringFNStrings uuid_split = stringfn_split(uuid4, '-');
+  char                   *uuid_mini = strdup(uuid_split.strings[0]);
+
+  safename(unique, uuid_mini);
 
   const char *outfile   = NULL;
   const char *prefix    = "";

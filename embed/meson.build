@@ -4,6 +4,7 @@ project('embeds', ['c'],
    'c_std=gnu99',
   ]
 )
+install_binaries = true
 embeds_bins = [
   'embed',
 ]
@@ -48,6 +49,9 @@ inc = include_directories(
 )
 #//***********************************************************/
 subdir('meson/deps/cstringfn')
+subdir('submodules/c_ansi/ansi-codes')
+subdir('submodules/c_ansi/ansi-rgb-utils')
+subdir('submodules/c_ansi/ansi-utils')
 if get_option('enable-binaries')
  foreach b : embeds_bins
   bin_src = [
@@ -67,6 +71,7 @@ if get_option('enable-binaries')
             include_directories: [
               inc,
             ],
+            install: install_binaries,
           )
   }
   if get_option('enable-binary-tests')

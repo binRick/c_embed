@@ -13,12 +13,18 @@
 [submodule "submodules/cflag"]
 	path = submodules/cflag
 	url = https://github.com/aperezdc/cflag
-[submodule "submodules/boydemdb"]
-	path = submodules/boydemdb
-	url = https://github.com/dimkr/boydemdb
 [submodule "submodules/libtermkey"]
 	path = submodules/libtermkey
 	url = https://github.com/astoeckel/libtermkey
 [submodule "submodules/c_stringfn"]
 	path = submodules/c_stringfn
 	url = https://github.com/sagiegurari/c_stringfn
+[submodule "submodules/c_ansi"]
+	path = submodules/c_ansi
+	url = https://github.com/binRick/c_ansi
+[submodule "submodules/asprintf.c"]
+	path = submodules/asprintf.c
+	url = https://github.com/jwerle/asprintf.c
+[submodule "submodules/meson_deps"]
+	path = submodules/meson_deps
+	url = https://github.com/binRick/meson_deps
