@@ -265,7 +265,7 @@ int main(int argc, char **argv) {
   fprintf(fp, "#include <ctype.h>\n");
   fprintf(fp, "#include <string.h>\n");
   fprintf(fp, "#include <stdlib.h>\n\n");
-  fprintf(fp, "#ifndef __C_EMBED_TBL__DEFINED\n#define __C_EMBED__TBL__DEFINED\n");
+  fprintf(fp, "#ifndef __C_EMBED_TBL__DEFINED\n#define __C_EMBED_TBL__DEFINED\n");
   fprintf(fp, "typedef struct C_EMBED_TBL C_EMBED_TBL;\nstruct C_EMBED_TBL { \n\tchar *filename; \n\tunsigned char *data; \n\tsize_t size;\n};\n#endif\n\n");
 
   /* write files */
