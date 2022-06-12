@@ -32,7 +32,6 @@ pwd = run_command(pwd_bin, check: true).stdout().strip()
 meson_deps_dir = pwd+'/submodules/meson_deps'
 #############################################################################
 inc = include_directories(
-  
   'submodules/meson_deps',
   'submodules/meson_deps/submodules',
   'submodules/meson_deps/submodules/c_fsio/include',
@@ -46,8 +45,6 @@ inc = include_directories(
   'submodules/meson_deps/submodules/greatest',
   'submodules/meson_deps/submodules/uuid4',
   'embed',
-  'submodules',
-  #  'submodules/meson_deps/submodules/c_stringfn',
   './',
   '../',
   '../../../',
