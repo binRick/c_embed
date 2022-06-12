@@ -19,3 +19,4 @@ embed/submodules/*
 embed/deps/*
 loader/deps/*
 LEGACY
+.*.c

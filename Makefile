@@ -35,7 +35,9 @@ EMBED_DIR=$(BUILD_DIR)/embed
 SOURCE_VENV_CMD = source $(VENV_DIR)/bin/activate
 ##############################################################
 TIDIED_FILES = \
-			   embed*/*.h embed*/*.c
+			   embed/*.h embed/*.c \
+			   embed-utils/*.h embed-utils/*.c \
+			   embed-test/*.h embed-test/*.c
 TBL1_EMBED_FILE=tbl1.c
 ##############################################################
 all: setup build test
