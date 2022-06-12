@@ -51,6 +51,8 @@ inc = include_directories(
 )
 #//***********************************************************/
 #//////////////////////////////////////////////////////////////////////
+subdir('submodules/meson_deps/meson/deps/ansicodes')
+subdir('submodules/meson_deps/meson/deps/parson')
 subdir('submodules/meson_deps/meson/deps/djbhash')
 subdir('submodules/meson_deps/meson/deps/c_stringfn')
 subdir('submodules/meson_deps/meson/deps/c_string_buffer')
@@ -61,8 +63,7 @@ subdir('submodules/meson_deps/meson/deps/bytes')
 subdir('submodules/meson_deps/meson/deps/ms')
 subdir('submodules/meson_deps/meson/deps/timestamp')
 subdir('submodules/meson_deps/meson/deps/slug')
-#subdir('submodules/meson_deps/meson/deps/
-#subdir('submodules/meson_deps/meson')
+subdir('submodules/meson_deps/meson/deps/cargs')
 #//////////////////////////////////////////////////////////////////////
 subdir('embed-utils')
 subdir('embed-test')

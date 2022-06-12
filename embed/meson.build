@@ -2,12 +2,14 @@ embed_srcs = [
   'embed.c',
 ]
 embed_include_dirs = [
+  inc,
   include_directories('./'),
   include_directories('../embed'),
-  inc,
 ]
 embed_deps = [
   embed_utils_dep,
+  cargs_dep,
+  ansicodes_dep,
 ]
 
 if get_option('enable-binaries')

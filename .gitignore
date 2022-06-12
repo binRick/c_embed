@@ -20,3 +20,4 @@ embed/deps/*
 loader/deps/*
 LEGACY
 .*.c
+subprojects/cargs
