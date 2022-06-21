@@ -1,11 +1,13 @@
 project('c_embed', ['c'],default_options:['warning_level=0','c_std=gnu99'])
 #############################################################
 cc = meson.get_compiler('c')
-pwd = run_command(find_program('pwd', required : true), check: true).stdout().strip()
-meson_deps_dir = pwd+'/submodules/meson_deps'
+pwd = meson.current_source_dir()
+meson_deps_dir = join_paths(meson.current_source_dir(),'submodules/meson_deps')
 #//***********************************************************/
 inc = [
-  include_directories('./'),
+  include_directories(
+    './',
+  ),
 ]
 #############################################################################
 subdir('submodules/meson_deps/meson/args')
