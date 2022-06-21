@@ -9,7 +9,7 @@ embed_include_dirs = [
 embed_deps = [
   embed_utils_dep,
   cargs_dep,
-  ansicodes_dep,
+  ansi_codes_dep,
 ]
 
 if get_option('enable-binaries')
