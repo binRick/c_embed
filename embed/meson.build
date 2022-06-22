@@ -1,5 +1,5 @@
 embed_srcs = [
-  'embed.c',
+  files('embed.c'),
 ]
 embed_include_dirs = [
   inc,
@@ -14,14 +14,10 @@ embed_deps = [
 
 if get_option('enable-binaries')
   embed_exec = executable('embed',
-     [
-      embed_srcs,
-     ],
+     embed_srcs,
      dependencies: embed_deps,
-     include_directories: [
-       embed_include_dirs,
-       inc,
-     ],
+     pie: true,
+     include_directories: embed_include_dirs,
   )
   if get_option('enable-binaries')
     test('embed', embed_exec, args: [])
