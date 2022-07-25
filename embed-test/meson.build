@@ -7,8 +7,6 @@ embed_include_dirs = [
   inc,
 ]
 embed_test_deps = [
-  #  greatest_dep,
-  #  c_stringfn_dep,
   embed_utils_dep,
 ]
 
@@ -24,6 +22,6 @@ if get_option('enable-binaries')
      ],
   )
   if get_option('enable-binary-tests')
-    test('embed-test', embed_test_exec, args: [])
+    test('embed-test', passh_program, args: [embed_test_exec, '-v','-a'])
   endif
 endif

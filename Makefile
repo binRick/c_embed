@@ -50,12 +50,12 @@ do-install: all
 rm-make-logs:
 	@rm .make-log* 2>/dev/null||true
 do-build: do-meson                                                                                       
-	@meson compile -C build
+	@passh meson compile -C build
 do-test:
-	@passh meson test -C build -v
+	@passh meson test -C build -v --print-errorlogs	
 build: do-meson do-build	
 do-meson:
-	@eval cd . && {  meson build || { meson build --reconfigure || { meson build --wipe; } && meson build; }; }
+	@meson build || { meson build --reconfigure || { meson build --wipe; } && meson build; };
 uncrustify:
 	@$(UNCRUSTIFY) -c etc/uncrustify.cfg --replace $(TIDIED_FILES) 
 	@shfmt -w scripts/*.sh
@@ -68,7 +68,7 @@ fix-dbg:
 	@$(SED) 's|, % lu);|, %lu);|g' -i $(TIDIED_FILES)
 	@$(SED) 's|, % d);|, %d);|g' -i $(TIDIED_FILES)
 	@$(SED) 's|, % zu);|, %zu);|g' -i $(TIDIED_FILES)
-	tidy: uncrustify uncrustify-clean fix-dbg rm-make-logs
+tidy: uncrustify uncrustify-clean fix-dbg rm-make-logs
 setup:
 	@mkdir -p $(EMBEDS_DIR)
 dev-all: all
@@ -76,7 +76,6 @@ pull:
 	@git pull
 do-embed-tbl1: setup
 	@$(EMBED_DIR)/embed -t tbl -z -o $(EMBEDS_DIR)/$(TBL1_EMBED_FILE) $(TBL1_EMBEDDED_FILES)
-	@\cat $(EMBEDS_DIR)/$(TBL1_EMBED_FILE)
 do-embed: do-embed-test
 install: do-install
 
