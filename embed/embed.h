@@ -2,7 +2,7 @@
 #include "ansi-codes/ansi-codes.h"
 #include "cargs/include/cargs.h"
 #include "embed-utils/embed-utils.h"
-#include "greatest/greatest.h"
+#include "submodules/c_greatest/greatest/greatest.h"
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdint.h>

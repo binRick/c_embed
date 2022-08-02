@@ -1,6 +1,6 @@
 #pragma once
 #include "embed-utils/embed-utils.h"
-#include "greatest/greatest.h"
+#include "submodules/c_greatest/greatest/greatest.h"
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdint.h>

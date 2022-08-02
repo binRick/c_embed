@@ -16,7 +16,6 @@ if get_option('enable-binaries')
   embed_exec = executable('embed',
      embed_srcs,
      dependencies: embed_deps,
-     pie: true,
      install: true,
      include_directories: embed_include_dirs,
   )
