@@ -1,13 +1,11 @@
 #include "embed.h"
 
-
 args_t args = {
   DEFAULT_INPUT_FILE,
   DEFAULT_OUTPUT_DIR,
   DEFAULT_MODE,
   DEFAULT_VERBOSE,
 };
-
 
 int debug_args(){
   fprintf(stderr,
@@ -26,7 +24,6 @@ int debug_args(){
   return(EXIT_SUCCESS);
 }
 
-
 int main(int argc, char **argv) {
   (void)argc; (void)argv;
   if ((argc >= 2) && (strcmp(argv[1], "--test") == 0)) {
@@ -40,7 +37,6 @@ int main(int argc, char **argv) {
     return(debug_args());
   }
 }
-
 
 int parse_args(int argc, char **argv){
   char               identifier;

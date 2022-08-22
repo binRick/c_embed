@@ -22,13 +22,11 @@ int64_t ts;
 char    uuid4[32];
 char    unique[32];
 
-
 static BufferedFile bf_writer(FILE *fp) {
   BufferedFile bf = { .fp = fp };
 
   return(bf);
 }
-
 
 static BufferedFile bf_reader(FILE *fp) {
   BufferedFile bf = { .fp = fp, .idx = sizeof(bf.buf), .eof_idx = -1 };
@@ -36,12 +34,10 @@ static BufferedFile bf_reader(FILE *fp) {
   return(bf);
 }
 
-
 static void bf_flush(BufferedFile *bf) {
   fwrite(bf->buf, 1, bf->idx, bf->fp);
   bf->idx = 0;
 }
-
 
 static void bf_write_byte(BufferedFile *bf, char b) {
   bf->buf[bf->idx++] = b;
@@ -49,7 +45,6 @@ static void bf_write_byte(BufferedFile *bf, char b) {
     bf_flush(bf);
   }
 }
-
 
 static int bf_read_byte(BufferedFile *bf) {
   if (bf->idx == sizeof(bf->buf)) {
@@ -65,7 +60,6 @@ static int bf_read_byte(BufferedFile *bf) {
   return(bf->buf[bf->idx++]);
 }
 
-
 static void error(const char *fmt, ...) {
   va_list vp;
 
@@ -76,7 +70,6 @@ static void error(const char *fmt, ...) {
   fprintf(stderr, "\n");
   exit(EXIT_FAILURE);
 }
-
 
 static void safename(char *dst, const char *filename) {
   const char *p = filename;
@@ -93,7 +86,6 @@ static void safename(char *dst, const char *filename) {
   *q = '\0';
 }
 
-
 static void write_byte_string(BufferedFile *bf, unsigned char n) {
   if (n >= 100) {
     bf_write_byte(bf, '0' + (n / 100) % 10);
@@ -104,7 +96,6 @@ static void write_byte_string(BufferedFile *bf, unsigned char n) {
   bf_write_byte(bf, '0' + n % 10);
   total_bytes++;
 }
-
 
 static void write_embedded(FILE *fp, const char *filename,
                            const char *varprefix, int nostatic, int zerobyte){
@@ -154,7 +145,6 @@ static void write_embedded(FILE *fp, const char *filename,
   fclose(infp);
 } /* write_embedded */
 
-
 static void print_help(void) {
   printf(
     "Usage: embed [OPTION]... [FILE]...\n"
@@ -168,7 +158,6 @@ static void print_help(void) {
     "  -h             display this help message\n"
     "  -v             display version number\n");
 }
-
 
 int embed_main(int argc, char **argv) {
   if ((argc >= 2) && (strcmp(argv[1], "--test") == 0)) {

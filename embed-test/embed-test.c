@@ -1,7 +1,6 @@
 #include "embed-test.h"
 bool RUNNING = true;
 
-
 void show_focus(){
   fprintf(stdout,
           "<%d>"
@@ -10,19 +9,15 @@ void show_focus(){
           );
 }
 
-
 TEST test_embed(void) {
   PASS();
 }
-
 
 SUITE(the_suite) {
   RUN_TEST(test_embed);
 }
 
-
 GREATEST_MAIN_DEFS();
-
 
 int do_test(int argc, char **argv) {
   GREATEST_MAIN_BEGIN();
@@ -32,7 +27,6 @@ int do_test(int argc, char **argv) {
   GREATEST_MAIN_END();
   return(0);
 }
-
 
 int main(int argc, char **argv) {
   (void)argc; (void)argv;
