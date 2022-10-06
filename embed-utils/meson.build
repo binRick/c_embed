@@ -16,7 +16,7 @@ embed_utils_deps = [
   djbhash_dep,
 ]
 
-embed_utils_lib = static_library('embed-utils',
+embed_utils_lib = library('embed-utils',
   embed_utils_srcs,
   install: true,
   dependencies: embed_utils_deps,

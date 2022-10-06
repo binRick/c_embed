@@ -24,3 +24,5 @@ subprojects/cargs
 .DU
 .make-*log*
 submodules/c_deps
+.meson.build*.log
+.meson-build*.log

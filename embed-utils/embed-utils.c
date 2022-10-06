@@ -279,7 +279,7 @@ int embed_main(int argc, char **argv) {
       fprintf(fp, "\t},\n");
       qty++;
     }
-    fprintf(fp, "\t{ NULL },\n");
+    fprintf(fp, "\t{ 0 },\n");
     fprintf(fp, "};\n\n"
             "size_t %s_qty = %lu;\n"
             "size_t %s_bytes = %lu;\n"
